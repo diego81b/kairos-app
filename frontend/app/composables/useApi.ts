@@ -1,9 +1,23 @@
 import type { FetchOptions } from 'ofetch'
 import { useAuthStore } from '~/stores/auth'
 
+// Module-level singleton: only one token refresh can be in flight at a time.
+// If multiple requests receive 401 simultaneously they all await this same
+// promise, so the refresh token is rotated exactly once.
+let _refreshPromise: Promise<void> | null = null
+
 export function useApi() {
   const config = useRuntimeConfig()
   const authStore = useAuthStore()
+
+  function ensureTokenRefreshed(): Promise<void> {
+    if (!_refreshPromise) {
+      _refreshPromise = authStore.refreshTokens().finally(() => {
+        _refreshPromise = null
+      })
+    }
+    return _refreshPromise
+  }
 
   async function request<T>(path: string, options: FetchOptions = {}): Promise<T> {
     const headers: Record<string, string> = {
@@ -23,7 +37,7 @@ export function useApi() {
       const fetchError = error as { status?: number }
       if (fetchError?.status === 401 && authStore.refreshToken) {
         try {
-          await authStore.refreshTokens()
+          await ensureTokenRefreshed()
           headers['Authorization'] = `Bearer ${authStore.accessToken}`
           return await $fetch<T>(`${config.public.apiBaseUrl}${path}`, {
             ...options,
