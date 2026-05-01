@@ -30,6 +30,16 @@
             >
               Settings
             </UButton>
+            <UButton
+              v-if="auth.user?.role === 'ADMIN'"
+              to="/admin/users"
+              variant="ghost"
+              size="sm"
+              icon="i-lucide-users"
+              :class="$route.path.startsWith('/admin') ? 'text-primary-600' : 'text-gray-600'"
+            >
+              Utenti
+            </UButton>
           </nav>
         </div>
 

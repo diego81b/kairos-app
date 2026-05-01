@@ -7,7 +7,7 @@ const auth = useAuthStore()
 const providerApi = useProviderApi()
 const toast = useToast()
 
-const isAdmin = computed(() => auth.user?.role === 'admin')
+const isAdmin = computed(() => auth.user?.role === 'ADMIN')
 
 const providers = ref<LlmProvider[]>([])
 const loading = ref(false)

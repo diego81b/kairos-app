@@ -11,6 +11,9 @@ import { PluginsAdminService } from './plugins-admin.service'
 import { ProvidersController, PluginsController } from './providers.controller'
 import { BindingsController } from './bindings.controller'
 import { CredentialsController } from './credentials.controller'
+import { UsersController } from '../admin/users.controller'
+import { UsersService } from '../admin/users.service'
+import { RolesGuard } from '../../../infrastructure/http/guards/RolesGuard'
 
 @Module({
   imports: [
@@ -24,7 +27,7 @@ import { CredentialsController } from './credentials.controller'
     ]),
     PluginModule,
   ],
-  controllers: [ProvidersController, PluginsController, BindingsController, CredentialsController],
-  providers: [PluginsAdminService],
+  controllers: [ProvidersController, PluginsController, BindingsController, CredentialsController, UsersController],
+  providers: [PluginsAdminService, UsersService, RolesGuard],
 })
 export class PluginsAdminModule {}

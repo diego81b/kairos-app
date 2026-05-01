@@ -13,6 +13,8 @@ import {
   Query,
 } from '@nestjs/common'
 import { JwtAuthGuard } from '../../../infrastructure/http/guards/JwtAuthGuard'
+import { RolesGuard } from '../../../infrastructure/http/guards/RolesGuard'
+import { Roles } from '../../../infrastructure/http/decorators/roles.decorator'
 import { ok } from '../../http/responses/ApiResponse'
 import { PluginsAdminService } from './plugins-admin.service'
 import type { CreateProviderDto, UpdateProviderDto } from './plugins-admin.dto'
@@ -29,7 +31,8 @@ interface AuthenticatedRequest {
 // ─────────────────────────────────────────────────────────────────────────────
 
 @Controller('admin/providers')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles('ADMIN')
 export class ProvidersController {
   constructor(private readonly service: PluginsAdminService) {}
 
@@ -74,7 +77,8 @@ export class ProvidersController {
 // ─────────────────────────────────────────────────────────────────────────────
 
 @Controller('admin/plugins')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles('ADMIN')
 export class PluginsController {
   constructor(private readonly service: PluginsAdminService) {}
 
