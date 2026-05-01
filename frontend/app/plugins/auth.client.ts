@@ -7,6 +7,7 @@ export default defineNuxtPlugin(async () => {
   if (auth.refreshToken && !auth.accessToken) {
     try {
       await auth.refreshTokens()
+      await auth.fetchMe()
     } catch {
       auth._clearSession()
     }
