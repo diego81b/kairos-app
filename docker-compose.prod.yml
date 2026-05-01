@@ -1,0 +1,23 @@
+# Production: docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+# All secret values MUST come from environment variables (CI/CD, vault, .env.prod — never committed).
+services:
+  postgres:
+    restart: always
+    # No port exposed — reachable only within the Docker network
+
+  backend:
+    build:
+      target: prod
+    restart: always
+    # Runs migrations then starts the server
+    command: sh -c "npx mikro-orm migration:up && node dist/main"
+
+  frontend:
+    build:
+      target: prod
+      args:
+        # Build-time injection of public API URL
+        NUXT_PUBLIC_API_URL: ${NUXT_PUBLIC_API_URL}
+    restart: always
+    ports:
+      - "3000:3000"

@@ -1,0 +1,41 @@
+# Auto-loaded for development. Never commit actual secrets here.
+services:
+  postgres:
+    ports:
+      - "25432:5432"
+
+  backend:
+    build:
+      target: dev
+    command: sh -c "npx mikro-orm migration:up && npx mikro-orm seeder:run && npm run start:dev"
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+      CHOKIDAR_INTERVAL: "1000"
+    volumes:
+      # Hot-reload source code
+      - ./backend/src:/app/src
+      # Mount agents directory for seeder
+      - ./agents:/app/agents
+      # Isolate node_modules inside container (prevents Windows/Linux ABI conflicts)
+      - /app/node_modules
+    ports:
+      - "${API_PORT:-23001}:${API_PORT:-23001}"
+    # Load secrets from backend/.env (gitignored)
+    env_file:
+      - path: ./backend/.env
+        required: false
+
+  frontend:
+    build:
+      target: dev
+    volumes:
+      - ./frontend/app:/app/app
+      - ./frontend/nuxt.config.ts:/app/nuxt.config.ts
+      - ./frontend/tsconfig.json:/app/tsconfig.json
+      - /app/node_modules
+      - nuxt_cache:/app/.nuxt
+    ports:
+      - "23000:3000"
+    env_file:
+      - path: ./frontend/.env
+        required: false

@@ -1,0 +1,12 @@
+{
+  "servers": {
+    "nuxt-ui": {
+      "type": "http",
+      "url": "https://ui.nuxt.com/mcp"
+    },
+    "tailwind-css": {
+      "type": "http",
+      "url": "https://mcp.tailwindcss.com"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(update-config)",
+      "Skill(update-config:*)",
+      "Bash(docker compose *)",
+      "Bash(xargs grep *)",
+      "Bash(curl -v -X POST http://localhost:23001/api/auth/login -H \"Content-Type: application/json\" -d '{\"email\":\"test@test.com\",\"password\":\"test\"}')",
+      "Bash(docker exec *)",
+      "Bash(docker restart *)",
+      "Bash(curl -s -X POST http://localhost:23001/api/auth/login -H \"Content-Type: application/json\" -d '{\"email\":\"demo@kairos.app\",\"password\":\"demo1234\"}')",
+      "Bash(npm info *)",
+      "WebFetch(domain:www.gnu.org)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(curl -s \"https://www.gnu.org/licenses/agpl-3.0.txt\" -o \"/tmp/agpl3.txt\")",
+      "Bash(git remote *)",
+      "Bash(git branch *)",
+      "Bash(git add *)",
+      "Bash(grep -E \"\\\\.env$\")"
+    ]
+  }
+}

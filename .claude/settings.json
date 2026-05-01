@@ -1,0 +1,4 @@
+{
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": ["nuxt-ui-docs", "tailwind-docs"]
+}

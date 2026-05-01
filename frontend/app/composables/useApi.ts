@@ -1,0 +1,50 @@
+import type { FetchOptions } from 'ofetch'
+import { useAuthStore } from '~/stores/auth'
+
+export function useApi() {
+  const config = useRuntimeConfig()
+  const authStore = useAuthStore()
+
+  async function request<T>(path: string, options: FetchOptions = {}): Promise<T> {
+    const headers: Record<string, string> = {
+      ...(options.headers as Record<string, string>),
+    }
+
+    if (authStore.accessToken) {
+      headers['Authorization'] = `Bearer ${authStore.accessToken}`
+    }
+
+    try {
+      return await $fetch<T>(`${config.public.apiBaseUrl}${path}`, {
+        ...options,
+        headers,
+      })
+    } catch (error: unknown) {
+      const fetchError = error as { status?: number }
+      if (fetchError?.status === 401 && authStore.refreshToken) {
+        try {
+          await authStore.refreshTokens()
+          headers['Authorization'] = `Bearer ${authStore.accessToken}`
+          return await $fetch<T>(`${config.public.apiBaseUrl}${path}`, {
+            ...options,
+            headers,
+          })
+        } catch {
+          authStore._clearSession()
+          await navigateTo('/login')
+          throw error
+        }
+      }
+      throw error
+    }
+  }
+
+  return {
+    get: <T>(path: string, opts?: FetchOptions) => request<T>(path, { method: 'GET', ...opts }),
+    post: <T>(path: string, body?: unknown, opts?: FetchOptions) =>
+      request<T>(path, { method: 'POST', body, ...opts }),
+    put: <T>(path: string, body?: unknown, opts?: FetchOptions) =>
+      request<T>(path, { method: 'PUT', body, ...opts }),
+    del: <T>(path: string, opts?: FetchOptions) => request<T>(path, { method: 'DELETE', ...opts }),
+  }
+}
