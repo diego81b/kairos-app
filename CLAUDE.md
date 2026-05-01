@@ -115,24 +115,22 @@ Do this in the same commit as the `.env` change.
 
 ## Update documentation after every change
 
-After completing any set of file modifications, always update the README and any relevant documentation in the `docs/` folder to reflect the changes made.
+After completing any set of file modifications, always update the documentation in this priority order:
 
-- **Use existing files**: always update files that already exist in `docs/` rather than creating new ones.
-- **Ask for confirmation**: only ask before creating a brand-new documentation file — if the right file already exists, update it directly without asking.
+1. **`README.md` first** — it is the primary source of truth for developers. Any change visible to someone setting up or running the project (credentials, endpoints, env vars, commands, new features) must appear here.
+2. **`docs/` second** — update the relevant file for in-depth technical detail. Use existing files; do not create new ones without asking.
 
 ### What must be documented
 
-Every change that affects any of the following **must** be reflected in `docs/`:
+| Change type | README.md | docs/ file |
+| --- | --- | --- |
+| New or modified entity / table | Database Schema section | `DATABASE-SCHEMA.md` |
+| New seeder or seed data (users, agents, plugins) | Login / seed section | `ARCHITECTURE.md` — *Database Seeding* |
+| New API endpoint or controller | Auth API / relevant section | `ARCHITECTURE.md`, `KAIROS-WEBAPP-ORCHESTRATION.md` |
+| Auth flow change | Auth flow section | `AUTHENTICATION-STRATEGY.md` |
+| New module, service, or major dependency | Tech Stack or Project Structure | `ARCHITECTURE.md` |
+| New environment variable | Env Variables Reference table | `.env.example` + `ARCHITECTURE.md` |
+| Agent or plugin system change | — | `PLUGIN-SYSTEM-DESIGN.md` |
+| New `run.bat` / `npm run` command | Quick Start section | `ARCHITECTURE.md` — *Development Setup* |
 
-| Change type | Where to document |
-| --- | --- |
-| New or modified entity / table | `DATABASE-SCHEMA.md` |
-| New seeder or seed data (users, agents, plugins) | `ARCHITECTURE.md` — *Database Seeding* section |
-| New API endpoint or controller | `ARCHITECTURE.md` and/or `KAIROS-WEBAPP-ORCHESTRATION.md` |
-| Auth flow change | `AUTHENTICATION-STRATEGY.md` |
-| New module, service, or major dependency | `ARCHITECTURE.md` |
-| New environment variable | `.env.example` **and** `ARCHITECTURE.md` |
-| Agent or plugin system change | `PLUGIN-SYSTEM-DESIGN.md` |
-| New `npm run` script or CLI command | `ARCHITECTURE.md` — *Development Setup* section |
-
-When in doubt, update `ARCHITECTURE.md` — it is the single source of truth for the technical implementation.
+When in doubt, update `README.md` — if the change matters to a developer running the project, it belongs there first.
