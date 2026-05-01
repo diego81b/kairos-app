@@ -1,0 +1,69 @@
+# KAIROS — GitHub Copilot Instructions
+
+## Commit after every change
+
+After completing any set of file modifications, always create a git commit using **Conventional Commits** style.
+
+### Format
+
+```
+<type>(<scope>): <short title>
+
+- point 1
+- point 2
+- point 3 (optional)
+- point 4 (optional, only for large changesets)
+```
+
+Use **only the title line** (no bullet points) when the change is minimal (single file, trivial fix or rename).
+
+### Types
+
+| Type | When to use |
+| --- | --- |
+| `feat` | New feature or capability |
+| `fix` | Bug fix |
+| `refactor` | Code restructure with no behavior change |
+| `docs` | Documentation only |
+| `chore` | Config, tooling, deps, non-functional |
+| `style` | Formatting, naming, no logic change |
+| `test` | Adding or updating tests |
+
+### Scope
+
+Use the area of the codebase affected: `backend`, `frontend`, `docker`, `docs`, `types`, `auth`, `agents`, `settings-ui`, etc.
+Omit scope only when the change truly spans the entire project.
+
+### Examples
+
+Minimal change (title only):
+```
+fix(backend): correct after_output type in UpsertMyAgentConfigDto
+```
+
+Medium change (title + 2–3 points):
+```
+feat(settings-ui): add Agents tab with create and config slideovers
+
+- AgentsTab with UTable listing global and private agents
+- AgentCreateSlideover form with Zod validation
+- AgentConfigSlideover with provider, prompt override and binding sections
+```
+
+Large change (title + 4 points max):
+```
+feat(frontend): scaffold Settings page with agent, provider and credential management
+
+- /settings page with UTabs (Agenti, Provider, Credenziali)
+- 4 new composables: useAgentApi, useProviderApi, useCredentialApi, useBindingApi
+- TypeScript types in app/types/ for Agent, LlmProvider, Binding
+- Navbar updated with Settings link in default.vue
+```
+
+### Rules
+
+- Write commit messages in **English**
+- Keep the title under **72 characters**
+- Never use `--no-verify`
+- Never amend a pushed commit
+- One commit per logical unit of work; do not batch unrelated changes
