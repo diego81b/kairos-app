@@ -997,6 +997,33 @@ volumes:
   postgres_data:
 ```
 
+### Database Seeding
+
+After running migrations, seed the database with demo data:
+
+```bash
+# Run all seeders (users, agents, plugins)
+npx mikro-orm seeder:run
+```
+
+The seeders are idempotent — safe to run multiple times. They live in
+`backend/src/infrastructure/persistence/seeders/` and are executed in this order
+by `DatabaseSeeder`:
+
+1. `DemoUserSeeder` — creates two demo accounts
+2. `DefaultAgentSeeder` — imports global agents from `/agents/*.md`
+3. `BuiltInPluginSeeder` — seeds built-in provider-routing plugins
+
+#### Demo credentials
+
+| Email | Password | Role |
+| --- | --- | --- |
+| `admin@kairos.app` | `admin1234` | `ADMIN` |
+| `user@kairos.app` | `user1234` | `USER` |
+
+> **Never use these credentials in production.** Change or delete these accounts
+> before any public deployment.
+
 ---
 
 ## Testing Strategy

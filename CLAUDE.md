@@ -119,3 +119,20 @@ After completing any set of file modifications, always update the README and any
 
 - **Use existing files**: always update files that already exist in `docs/` rather than creating new ones.
 - **Ask for confirmation**: only ask before creating a brand-new documentation file — if the right file already exists, update it directly without asking.
+
+### What must be documented
+
+Every change that affects any of the following **must** be reflected in `docs/`:
+
+| Change type | Where to document |
+| --- | --- |
+| New or modified entity / table | `DATABASE-SCHEMA.md` |
+| New seeder or seed data (users, agents, plugins) | `ARCHITECTURE.md` — *Database Seeding* section |
+| New API endpoint or controller | `ARCHITECTURE.md` and/or `KAIROS-WEBAPP-ORCHESTRATION.md` |
+| Auth flow change | `AUTHENTICATION-STRATEGY.md` |
+| New module, service, or major dependency | `ARCHITECTURE.md` |
+| New environment variable | `.env.example` **and** `ARCHITECTURE.md` |
+| Agent or plugin system change | `PLUGIN-SYSTEM-DESIGN.md` |
+| New `npm run` script or CLI command | `ARCHITECTURE.md` — *Development Setup* section |
+
+When in doubt, update `ARCHITECTURE.md` — it is the single source of truth for the technical implementation.
