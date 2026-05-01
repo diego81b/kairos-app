@@ -67,3 +67,10 @@ feat(frontend): scaffold Settings page with agent, provider and credential manag
 - Never use `--no-verify`
 - Never amend a pushed commit
 - One commit per logical unit of work; do not batch unrelated changes
+
+## Update documentation after every change
+
+After completing any set of file modifications, always update the README and any relevant documentation in the `docs/` folder to reflect the changes made.
+
+- **Use existing files**: always update files that already exist in `docs/` rather than creating new ones.
+- **Ask for confirmation**: only ask before creating a brand-new documentation file — if the right file already exists, update it directly without asking.
