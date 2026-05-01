@@ -68,6 +68,34 @@ feat(frontend): scaffold Settings page with agent, provider and credential manag
 - Never amend a pushed commit
 - One commit per logical unit of work; do not batch unrelated changes
 
+## Branch, commit and push after every change
+
+After completing any set of file modifications:
+
+1. **Create a feature branch** from `main` using the convention:
+
+   ```text
+   <type>/<short-slug>
+   ```
+
+   Examples: `feat/admin-user-management`, `fix/role-case-sensitivity`, `refactor/auth-guard`
+
+2. **Commit** on that branch following the Conventional Commits format above.
+
+3. **Push** the branch to the remote:
+
+   ```bash
+   git push -u origin <branch-name>
+   ```
+
+4. **Do not merge** — leave the PR/merge to the user.
+
+### Branch naming rules
+
+- Use the same `type` as the commit (`feat`, `fix`, `refactor`, etc.)
+- Keep the slug short and lowercase, words separated by `-`
+- Never commit directly to `main`
+
 ## Update documentation after every change
 
 After completing any set of file modifications, always update the README and any relevant documentation in the `docs/` folder to reflect the changes made.
