@@ -70,6 +70,7 @@ feat(frontend): scaffold Settings page with agent, provider and credential manag
 - Never use `--no-verify`
 - Never amend a pushed commit
 - One commit per logical unit of work; do not batch unrelated changes
+- **Never add `Co-Authored-By` trailers** to commit messages
 
 ## Branch, commit and push after every change
 
