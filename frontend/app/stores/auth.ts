@@ -73,6 +73,16 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
+    async fetchMe() {
+      if (!this.accessToken) return
+      const config = useRuntimeConfig()
+      const data = await $fetch<{ success: boolean; data: User }>(
+        `${config.public.apiBaseUrl}/auth/me`,
+        { headers: { Authorization: `Bearer ${this.accessToken}` } },
+      )
+      this.user = data.data
+    },
+
     loadFromStorage() {
       if (!import.meta.client) return
       const token = localStorage.getItem('refreshToken')
