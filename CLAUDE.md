@@ -70,15 +70,9 @@ feat(frontend): scaffold Settings page with agent, provider and credential manag
 
 ## Branch, commit and push after every change
 
-After completing any set of file modifications:
+This project uses **Gitflow**. After completing any set of file modifications:
 
-1. **Create a feature branch** from `main` using the convention:
-
-   ```text
-   <type>/<short-slug>
-   ```
-
-   Examples: `feat/admin-user-management`, `fix/role-case-sensitivity`, `refactor/auth-guard`
+1. **Create the right branch type** using the table below, then commit and push.
 
 2. **Commit** on that branch following the Conventional Commits format above.
 
@@ -90,11 +84,22 @@ After completing any set of file modifications:
 
 4. **Do not merge** — leave the PR/merge to the user.
 
-### Branch naming rules
+### Branch types
 
-- Use the same `type` as the commit (`feat`, `fix`, `refactor`, etc.)
-- Keep the slug short and lowercase, words separated by `-`
-- Never commit directly to `main`
+| Work type | Branch prefix | Base branch | Example |
+| --- | --- | --- | --- |
+| New feature, refactor, chore, docs | `feature/` | `develop` | `feature/minio-object-storage` |
+| Bug fix discovered during development | `bugfix/` | `develop` | `bugfix/role-case-sensitivity` |
+| Urgent fix on production code | `hotfix/` | `main` | `hotfix/jwt-expiry-crash` |
+| Release preparation | `release/` | `develop` | `release/1.2.0` |
+
+### Branch rules
+
+- **Never commit directly to `main` or `develop`**
+- Features, refactors, docs, chores, and style changes all use `feature/`
+- Use `bugfix/` only for bugs found in `develop` before a release
+- Use `hotfix/` only for critical fixes that must go directly to `main`
+- Keep slugs short and lowercase, words separated by `-`
 
 ## Update documentation after every change
 
