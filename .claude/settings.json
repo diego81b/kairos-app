@@ -1,4 +1,12 @@
 {
   "enableAllProjectMcpServers": true,
-  "enabledMcpjsonServers": ["nuxt-ui-docs", "tailwind-docs"]
+  "enabledMcpjsonServers": [
+    "nuxt-ui-docs",
+    "tailwind-docs"
+  ],
+  "permissions": {
+    "allow": [
+      "Bash(git *)"
+    ]
+  }
 }
