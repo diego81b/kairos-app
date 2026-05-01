@@ -6,7 +6,7 @@ After completing any set of file modifications, always create a git commit using
 
 ### Format
 
-```
+```text
 <type>(<scope>): <short title>
 
 - point 1
@@ -37,12 +37,14 @@ Omit scope only when the change truly spans the entire project.
 ### Examples
 
 Minimal change (title only):
-```
+
+```text
 fix(backend): correct after_output type in UpsertMyAgentConfigDto
 ```
 
 Medium change (title + 2–3 points):
-```
+
+```text
 feat(settings-ui): add Agents tab with create and config slideovers
 
 - AgentsTab with UTable listing global and private agents
@@ -51,7 +53,8 @@ feat(settings-ui): add Agents tab with create and config slideovers
 ```
 
 Large change (title + 4 points max):
-```
+
+```text
 feat(frontend): scaffold Settings page with agent, provider and credential management
 
 - /settings page with UTabs (Agenti, Provider, Credenziali)
@@ -100,6 +103,16 @@ This project uses **Gitflow**. After completing any set of file modifications:
 - Use `bugfix/` only for bugs found in `develop` before a release
 - Use `hotfix/` only for critical fixes that must go directly to `main`
 - Keep slugs short and lowercase, words separated by `-`
+
+## Keep .env.example in sync
+
+Whenever any `.env` file is modified (root `.env`, `backend/.env`, `frontend/.env`, or any other), **always update the corresponding `.env.example`** in the same directory:
+
+- Add any new variable with a placeholder or safe default value (never a real secret)
+- Remove any variable that was deleted
+- Keep comments and grouping consistent with the `.env` file
+
+Do this in the same commit as the `.env` change.
 
 ## Update documentation after every change
 
