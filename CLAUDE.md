@@ -92,16 +92,14 @@ This project uses **Gitflow**. After completing any set of file modifications:
 
 | Work type | Branch prefix | Base branch | Example |
 | --- | --- | --- | --- |
-| New feature, refactor, chore, docs | `feature/` | `develop` | `feature/minio-object-storage` |
-| Bug fix discovered during development | `bugfix/` | `develop` | `bugfix/role-case-sensitivity` |
+| New feature, refactor, chore, docs, bug fix in develop | `feature/` | `develop` | `feature/minio-object-storage` |
 | Urgent fix on production code | `hotfix/` | `main` | `hotfix/jwt-expiry-crash` |
 | Release preparation | `release/` | `develop` | `release/1.2.0` |
 
 ### Branch rules
 
 - **Never commit directly to `main` or `develop`**
-- Features, refactors, docs, chores, and style changes all use `feature/`
-- Use `bugfix/` only for bugs found in `develop` before a release
+- Features, refactors, docs, chores, style changes, and bug fixes found in `develop` all use `feature/`
 - Use `hotfix/` only for critical fixes that must go directly to `main`
 - Keep slugs short and lowercase, words separated by `-`
 
