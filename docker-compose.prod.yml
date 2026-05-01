@@ -5,6 +5,10 @@ services:
     restart: always
     # No port exposed — reachable only within the Docker network
 
+  minio:
+    restart: always
+    # No ports exposed — reachable only within the Docker network
+
   backend:
     build:
       target: prod

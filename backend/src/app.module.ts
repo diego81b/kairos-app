@@ -21,6 +21,7 @@ import { AuthModule } from './presentation/modules/auth/auth.module'
 import { PluginModule } from './infrastructure/plugin/plugin.module'
 import { PluginsAdminModule } from './presentation/modules/plugins-admin/plugins-admin.module'
 import { MyAgentsModule } from './presentation/modules/my-agents/my-agents.module'
+import { StorageModule } from './infrastructure/storage/StorageModule'
 
 @Module({
   imports: [
@@ -79,6 +80,7 @@ import { MyAgentsModule } from './presentation/modules/my-agents/my-agents.modul
     PluginModule,
     PluginsAdminModule,
     MyAgentsModule,
+    StorageModule,
   ],
 })
 export class AppModule {}

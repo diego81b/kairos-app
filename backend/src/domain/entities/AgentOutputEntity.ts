@@ -22,11 +22,11 @@ export class AgentOutputEntity {
   @Property({ default: 1 })
   version: number = 1
 
-  @Property({ columnType: 'jsonb', nullable: true })
-  outputData?: Record<string, unknown>
+  @Property({ length: 500, nullable: true })
+  storageKey?: string
 
-  @Property({ columnType: 'text', nullable: true })
-  outputMarkdown?: string
+  @Property({ length: 50, default: 'minio' })
+  storageProvider: string = 'minio'
 
   @Property({ length: 50, default: 'pending' })
   status: AgentOutputStatus = 'pending'

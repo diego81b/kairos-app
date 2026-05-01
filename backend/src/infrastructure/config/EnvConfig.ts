@@ -26,6 +26,13 @@ export const EnvConfig = () => ({
     // Leave empty to disable local plugin discovery.
     localPath: process.env.PLUGIN_LOCAL_PATH || '',
   },
+  minio: {
+    host: process.env.MINIO_HOST || 'localhost',
+    port: parseInt(process.env.MINIO_PORT || '9000', 10),
+    useSsl: process.env.MINIO_USE_SSL === 'true',
+    accessKey: process.env.MINIO_ACCESS_KEY || 'kairos',
+    secretKey: process.env.MINIO_SECRET_KEY || 'kairos-secret',
+  },
 })
 
 export type AppConfig = ReturnType<typeof EnvConfig>
