@@ -112,9 +112,9 @@ onMounted(load)
       </template>
     </UTable>
 
-    <UserCreateSlideover v-model:open="showCreate" @created="load" />
+    <AdminUserCreateSlideover v-model:open="showCreate" @created="load" />
 
-    <UserEditSlideover
+    <AdminUserEditSlideover
       v-if="selectedUser"
       v-model:open="showEdit"
       :user="selectedUser"
