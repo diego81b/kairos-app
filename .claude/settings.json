@@ -1,12 +1,13 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(git *)",
+      "PowerShell(docker exec kairos_frontend sh -c \"node -e \\\\\"console.log\\(require\\('/app/node_modules/zod/package.json'\\).version\\)\\\\\"\")"
+    ]
+  },
   "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [
     "nuxt-ui-docs",
     "tailwind-docs"
-  ],
-  "permissions": {
-    "allow": [
-      "Bash(git *)"
-    ]
-  }
+  ]
 }
