@@ -32,8 +32,9 @@ async function load() {
   }
 }
 
-function openEdit(user: ManagedUser) {
+async function openEdit(user: ManagedUser) {
   selectedUser.value = user
+  await nextTick()
   showEdit.value = true
 }
 

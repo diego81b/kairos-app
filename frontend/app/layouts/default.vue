@@ -62,11 +62,34 @@
     <main class="p-4">
       <slot />
     </main>
+
+    <!-- Global loading overlay -->
+    <Transition name="fade">
+      <div
+        v-if="overlayActive"
+        class="fixed inset-0 z-9999 flex items-center justify-center bg-black/40"
+        aria-hidden="true"
+      >
+        <UIcon name="i-lucide-loader-circle" class="size-12 animate-spin text-white" />
+      </div>
+    </Transition>
   </div>
 </template>
 
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.15s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>
+
 <script setup lang="ts">
 const auth = useAuthStore()
+const { active: overlayActive } = useOverlay()
 
 const isDark = ref(false)
 
