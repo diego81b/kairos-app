@@ -62,7 +62,7 @@ async function onSubmit() {
         </UFormField>
 
         <div class="flex justify-end gap-2 pt-2">
-          <UButton variant="ghost" @click="open = false">Annulla</UButton>
+          <UButton type="button" variant="ghost" @click="open = false">Annulla</UButton>
           <UButton type="submit" :loading="loading">Salva</UButton>
         </div>
       </UForm>

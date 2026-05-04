@@ -99,7 +99,7 @@ watch(open, (val) => {
         </UFormField>
 
         <div class="flex justify-end gap-2 pt-2">
-          <UButton variant="ghost" @click="open = false">Annulla</UButton>
+          <UButton type="button" variant="ghost" @click="open = false">Annulla</UButton>
           <UButton type="submit" :loading="loading">Crea agente</UButton>
         </div>
       </UForm>
