@@ -9,7 +9,7 @@ const emit = defineEmits<{ updated: [] }>()
 const userApi = useUserApi()
 const toast = useToast()
 const loading = ref(false)
-const formRef = useTemplateRef('formRef')
+const { withOverlay } = useOverlay()
 
 const ROLES: { label: string; value: UserRole }[] = [
   { label: 'Admin', value: 'ADMIN' },
@@ -27,44 +27,53 @@ const form = reactive<UpdateUserPayload>({
   role: props.user.role,
 })
 
+const errors = reactive<Record<string, string>>({})
+
 watch(() => props.user, (user) => {
   form.name = user.name ?? ''
   form.role = user.role
+  Object.keys(errors).forEach(k => delete errors[k])
 })
 
 async function handleSubmit() {
-  try {
-    await formRef.value?.validate()
-  } catch {
+  Object.keys(errors).forEach(k => delete errors[k])
+  const result = schema.safeParse(form)
+  if (!result.success) {
+    for (const issue of result.error.issues) {
+      const field = String(issue.path[0])
+      if (field && !errors[field]) errors[field] = issue.message
+    }
     return
   }
 
   loading.value = true
-  try {
-    await userApi.updateUser(props.user.id, {
-      name: form.name || undefined,
-      role: form.role,
-    })
-    toast.add({ title: 'Utente aggiornato', color: 'success' })
-    open.value = false
-    emit('updated')
-  } catch {
-    toast.add({ title: 'Errore aggiornamento utente', color: 'error' })
-  } finally {
-    loading.value = false
-  }
+  await withOverlay(async () => {
+    try {
+      await userApi.updateUser(props.user.id, {
+        name: form.name || undefined,
+        role: form.role,
+      })
+      toast.add({ title: 'Utente aggiornato', color: 'success' })
+      open.value = false
+      emit('updated')
+    } catch {
+      toast.add({ title: 'Errore aggiornamento utente', color: 'error' })
+    } finally {
+      loading.value = false
+    }
+  })
 }
 </script>
 
 <template>
   <USlideover v-model:open="open" :title="`Modifica: ${user.email}`" side="right">
     <template #body>
-      <UForm ref="formRef" :schema="schema" :state="form" class="space-y-4 p-1">
-        <UFormField label="Nome" name="name">
+      <div class="space-y-4 p-1">
+        <UFormField label="Nome" name="name" :error="errors.name">
           <UInput v-model="form.name" placeholder="Nome e cognome (opzionale)" class="w-full" />
         </UFormField>
 
-        <UFormField label="Ruolo" name="role" required>
+        <UFormField label="Ruolo" name="role" required :error="errors.role">
           <USelect v-model="form.role" :items="ROLES" value-key="value" label-key="label" class="w-full" />
         </UFormField>
 
@@ -72,7 +81,7 @@ async function handleSubmit() {
           <UButton type="button" variant="ghost" @click="open = false">Annulla</UButton>
           <UButton type="button" :loading="loading" @click="handleSubmit">Salva</UButton>
         </div>
-      </UForm>
+      </div>
     </template>
   </USlideover>
 </template>

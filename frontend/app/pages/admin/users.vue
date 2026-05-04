@@ -32,8 +32,9 @@ async function load() {
   }
 }
 
-function openEdit(user: ManagedUser) {
+async function openEdit(user: ManagedUser) {
   selectedUser.value = user
+  await nextTick()
   showEdit.value = true
 }
 
@@ -111,9 +112,9 @@ onMounted(load)
       </template>
     </UTable>
 
-    <UserCreateSlideover v-model:open="showCreate" @created="load" />
+    <AdminUserCreateSlideover v-model:open="showCreate" @created="load" />
 
-    <UserEditSlideover
+    <AdminUserEditSlideover
       v-if="selectedUser"
       v-model:open="showEdit"
       :user="selectedUser"

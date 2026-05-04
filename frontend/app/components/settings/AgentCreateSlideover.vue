@@ -8,7 +8,7 @@ const emit = defineEmits<{ created: [] }>()
 const agentApi = useAgentApi()
 const toast = useToast()
 const loading = ref(false)
-const formRef = useTemplateRef('formRef')
+const { withOverlay } = useOverlay()
 
 const AGENT_TYPES = [
   { label: 'PM', value: 'pm' },
@@ -38,6 +38,8 @@ const form = reactive<CreateAgentPayload>({
   after_output: '',
 })
 
+const errors = reactive<Record<string, string>>({})
+
 function resetForm() {
   form.name = ''
   form.agentType = 'pm'
@@ -46,26 +48,33 @@ function resetForm() {
   form.output_format = ''
   form.output_example = ''
   form.after_output = ''
+  Object.keys(errors).forEach(k => delete errors[k])
 }
 
 async function handleSubmit() {
-  try {
-    await formRef.value?.validate()
-  } catch {
+  Object.keys(errors).forEach(k => delete errors[k])
+  const result = schema.safeParse(form)
+  if (!result.success) {
+    for (const issue of result.error.issues) {
+      const field = String(issue.path[0])
+      if (field && !errors[field]) errors[field] = issue.message
+    }
     return
   }
 
   loading.value = true
-  try {
-    await agentApi.createAgent(form)
-    toast.add({ title: 'Agente creato', color: 'success' })
-    resetForm()
-    emit('created')
-  } catch {
-    toast.add({ title: 'Errore nella creazione', color: 'error' })
-  } finally {
-    loading.value = false
-  }
+  await withOverlay(async () => {
+    try {
+      await agentApi.createAgent(form)
+      toast.add({ title: 'Agente creato', color: 'success' })
+      resetForm()
+      emit('created')
+    } catch {
+      toast.add({ title: 'Errore nella creazione', color: 'error' })
+    } finally {
+      loading.value = false
+    }
+  })
 }
 
 watch(open, (val) => {
@@ -76,32 +85,32 @@ watch(open, (val) => {
 <template>
   <USlideover v-model:open="open" title="Nuovo agente" side="right">
     <template #body>
-      <UForm ref="formRef" :schema="schema" :state="form" class="space-y-4 p-1">
-        <UFormField label="Nome" name="name" required>
-          <UInput v-model="form.name" placeholder="es. Il mio PM Agent" class="w-full" />
+      <div class="space-y-4 p-1">
+        <UFormField label="Nome" name="name" required :error="errors.name">
+          <UInput v-model="form.name" placeholder="es. Il mio PM Agent" class="w-full" @input="delete errors.name" />
         </UFormField>
 
-        <UFormField label="Tipo" name="agentType" required>
+        <UFormField label="Tipo" name="agentType" required :error="errors.agentType">
           <USelect v-model="form.agentType" :items="AGENT_TYPES" value-key="value" label-key="label" class="w-full" />
         </UFormField>
 
-        <UFormField label="Descrizione" name="description">
+        <UFormField label="Descrizione" name="description" :error="errors.description">
           <UTextarea v-model="form.description" placeholder="Descrizione opzionale" :rows="2" class="w-full" />
         </UFormField>
 
-        <UFormField label="System Prompt" name="systemPrompt">
+        <UFormField label="System Prompt" name="systemPrompt" :error="errors.systemPrompt">
           <UTextarea v-model="form.systemPrompt" placeholder="Istruzioni di sistema per l'agente" :rows="4" class="w-full" />
         </UFormField>
 
-        <UFormField label="Output Format" name="output_format">
+        <UFormField label="Output Format" name="output_format" :error="errors.output_format">
           <UTextarea v-model="form.output_format" placeholder="Formato atteso dell'output" :rows="3" class="w-full" />
         </UFormField>
 
-        <UFormField label="Output Example" name="output_example">
+        <UFormField label="Output Example" name="output_example" :error="errors.output_example">
           <UTextarea v-model="form.output_example" placeholder="Esempio di output" :rows="3" class="w-full" />
         </UFormField>
 
-        <UFormField label="After Output" name="after_output">
+        <UFormField label="After Output" name="after_output" :error="errors.after_output">
           <UTextarea v-model="form.after_output" placeholder="Istruzioni post-output (solo orchestrazione)" :rows="2" class="w-full" />
         </UFormField>
 
@@ -109,7 +118,7 @@ watch(open, (val) => {
           <UButton type="button" variant="ghost" @click="open = false">Annulla</UButton>
           <UButton type="button" :loading="loading" @click="handleSubmit">Crea agente</UButton>
         </div>
-      </UForm>
+      </div>
     </template>
   </USlideover>
 </template>

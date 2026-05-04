@@ -8,7 +8,7 @@
         </div>
       </template>
 
-      <UForm :schema="schema" :state="form" class="space-y-4" @submit="onSubmit">
+      <UForm :schema="schema" :state="form" :validate-on="['submit']" class="space-y-4" @submit="onSubmit">
         <UFormField label="Email" name="email">
           <UInput v-model="form.email" type="email" placeholder="you@example.com" class="w-full" />
         </UFormField>
@@ -17,7 +17,7 @@
           <UInput v-model="form.password" type="password" placeholder="••••••••" class="w-full" />
         </UFormField>
 
-        <UButton type="submit" block :loading="loading">
+        <UButton type="submit" block :loading="loading" :disabled="loading">
           Sign in
         </UButton>
       </UForm>
