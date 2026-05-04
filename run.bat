@@ -3,6 +3,7 @@ if "%1"=="dev-up"      ( docker compose -f docker-compose.yml -f docker-compose.
 if "%1"=="dev-up-d"    ( docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d ) & exit /b
 if "%1"=="dev-up-b"    ( docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build ) & exit /b
 if "%1"=="dev-up-bd"   ( docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build -d ) & exit /b
+if "%1"=="dev-fresh"   ( docker compose -f docker-compose.yml -f docker-compose.dev.yml stop backend & docker compose -f docker-compose.yml -f docker-compose.dev.yml rm -v -f backend & docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build -d ) & exit /b
 if "%1"=="dev-down"    ( docker compose -f docker-compose.yml -f docker-compose.dev.yml down ) & exit /b
 if "%1"=="dev-build"   ( docker compose -f docker-compose.yml -f docker-compose.dev.yml build ) & exit /b
 if "%1"=="dev-logs"    ( docker compose -f docker-compose.yml -f docker-compose.dev.yml logs -f ) & exit /b
@@ -15,6 +16,6 @@ if "%1"=="clean"     ( docker compose down -v --remove-orphans ) & exit /b
 
 echo Uso: run.bat [comando]
 echo.
-echo  dev-up       dev-up-d    dev-up-b    dev-up-bd    dev-down    dev-build    dev-logs
+echo  dev-up       dev-up-d    dev-up-b    dev-up-bd    dev-fresh    dev-down    dev-build    dev-logs
 echo  prod-up      prod-down   prod-build  prod-logs
 echo  ps           clean

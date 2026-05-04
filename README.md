@@ -129,6 +129,8 @@ run.bat dev-up        # start (attached logs)
 run.bat dev-up-d      # start detached
 run.bat dev-up-b      # rebuild + start
 run.bat dev-up-bd     # rebuild + start detached
+run.bat dev-fresh     # drop backend node_modules volume, rebuild image, start detached
+                      #   use after adding/removing npm packages
 run.bat dev-down      # stop and remove containers
 run.bat dev-logs      # follow logs
 run.bat ps            # container status
