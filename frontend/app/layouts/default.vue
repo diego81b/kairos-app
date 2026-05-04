@@ -94,9 +94,7 @@ const { active: overlayActive } = useOverlay()
 const isDark = ref(false)
 
 onMounted(() => {
-  const stored = localStorage.getItem('kairos-theme')
-  isDark.value = stored ? stored === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches
-  document.documentElement.classList.toggle('dark', isDark.value)
+  isDark.value = document.documentElement.classList.contains('dark')
 })
 
 function toggleTheme() {
