@@ -8,6 +8,7 @@ const emit = defineEmits<{ created: [] }>()
 const userApi = useUserApi()
 const toast = useToast()
 const loading = ref(false)
+const formRef = useTemplateRef('formRef')
 
 const ROLES: { label: string; value: UserRole }[] = [
   { label: 'Admin', value: 'ADMIN' },
@@ -44,7 +45,13 @@ function resetForm() {
   form.confirmPassword = ''
 }
 
-async function onSubmit() {
+async function handleSubmit() {
+  try {
+    await formRef.value?.validate()
+  } catch {
+    return
+  }
+
   loading.value = true
   try {
     await userApi.createUser({
@@ -72,7 +79,7 @@ watch(open, (val) => {
 <template>
   <USlideover v-model:open="open" title="Aggiungi utente" side="right">
     <template #body>
-      <UForm :schema="schema" :state="form" class="space-y-4 p-1" @submit="onSubmit">
+      <UForm ref="formRef" :schema="schema" :state="form" class="space-y-4 p-1">
         <UFormField label="Email" name="email" required>
           <UInput v-model="form.email" type="email" placeholder="utente@esempio.com" class="w-full" />
         </UFormField>
@@ -95,7 +102,7 @@ watch(open, (val) => {
 
         <div class="flex justify-end gap-2 pt-2">
           <UButton type="button" variant="ghost" @click="open = false">Annulla</UButton>
-          <UButton type="submit" :loading="loading">Crea utente</UButton>
+          <UButton type="button" :loading="loading" @click="handleSubmit">Crea utente</UButton>
         </div>
       </UForm>
     </template>

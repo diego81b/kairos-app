@@ -9,6 +9,7 @@ const emit = defineEmits<{ updated: [] }>()
 const userApi = useUserApi()
 const toast = useToast()
 const loading = ref(false)
+const formRef = useTemplateRef('formRef')
 
 const ROLES: { label: string; value: UserRole }[] = [
   { label: 'Admin', value: 'ADMIN' },
@@ -31,7 +32,13 @@ watch(() => props.user, (user) => {
   form.role = user.role
 })
 
-async function onSubmit() {
+async function handleSubmit() {
+  try {
+    await formRef.value?.validate()
+  } catch {
+    return
+  }
+
   loading.value = true
   try {
     await userApi.updateUser(props.user.id, {
@@ -52,7 +59,7 @@ async function onSubmit() {
 <template>
   <USlideover v-model:open="open" :title="`Modifica: ${user.email}`" side="right">
     <template #body>
-      <UForm :schema="schema" :state="form" class="space-y-4 p-1" @submit="onSubmit">
+      <UForm ref="formRef" :schema="schema" :state="form" class="space-y-4 p-1">
         <UFormField label="Nome" name="name">
           <UInput v-model="form.name" placeholder="Nome e cognome (opzionale)" class="w-full" />
         </UFormField>
@@ -63,7 +70,7 @@ async function onSubmit() {
 
         <div class="flex justify-end gap-2 pt-2">
           <UButton type="button" variant="ghost" @click="open = false">Annulla</UButton>
-          <UButton type="submit" :loading="loading">Salva</UButton>
+          <UButton type="button" :loading="loading" @click="handleSubmit">Salva</UButton>
         </div>
       </UForm>
     </template>
