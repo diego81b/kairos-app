@@ -133,7 +133,7 @@ onMounted(load)
           </UFormField>
 
           <div class="col-span-2 flex justify-end gap-2">
-            <UButton variant="ghost" @click="showCreate = false">Annulla</UButton>
+            <UButton type="button" variant="ghost" @click="showCreate = false">Annulla</UButton>
             <UButton type="submit" :loading="loadingCreate">Crea</UButton>
           </div>
         </UForm>

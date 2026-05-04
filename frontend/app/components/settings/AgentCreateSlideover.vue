@@ -8,6 +8,7 @@ const emit = defineEmits<{ created: [] }>()
 const agentApi = useAgentApi()
 const toast = useToast()
 const loading = ref(false)
+const formRef = useTemplateRef('formRef')
 
 const AGENT_TYPES = [
   { label: 'PM', value: 'pm' },
@@ -47,7 +48,13 @@ function resetForm() {
   form.after_output = ''
 }
 
-async function onSubmit() {
+async function handleSubmit() {
+  try {
+    await formRef.value?.validate()
+  } catch {
+    return
+  }
+
   loading.value = true
   try {
     await agentApi.createAgent(form)
@@ -69,7 +76,7 @@ watch(open, (val) => {
 <template>
   <USlideover v-model:open="open" title="Nuovo agente" side="right">
     <template #body>
-      <UForm :schema="schema" :state="form" class="space-y-4 p-1" @submit="onSubmit">
+      <UForm ref="formRef" :schema="schema" :state="form" class="space-y-4 p-1">
         <UFormField label="Nome" name="name" required>
           <UInput v-model="form.name" placeholder="es. Il mio PM Agent" class="w-full" />
         </UFormField>
@@ -99,8 +106,8 @@ watch(open, (val) => {
         </UFormField>
 
         <div class="flex justify-end gap-2 pt-2">
-          <UButton variant="ghost" @click="open = false">Annulla</UButton>
-          <UButton type="submit" :loading="loading">Crea agente</UButton>
+          <UButton type="button" variant="ghost" @click="open = false">Annulla</UButton>
+          <UButton type="button" :loading="loading" @click="handleSubmit">Crea agente</UButton>
         </div>
       </UForm>
     </template>
