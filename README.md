@@ -129,6 +129,8 @@ run.bat dev-up        # start (attached logs)
 run.bat dev-up-d      # start detached
 run.bat dev-up-b      # rebuild + start
 run.bat dev-up-bd     # rebuild + start detached
+run.bat dev-fresh     # drop backend node_modules volume, rebuild image, start detached
+                      #   use after adding/removing npm packages
 run.bat dev-down      # stop and remove containers
 run.bat dev-logs      # follow logs
 run.bat ps            # container status
@@ -168,12 +170,16 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml exec backend npm 
 After starting the stack, open <http://localhost:23000>.
 You will be redirected to the login page automatically.
 
-### Demo account (created by seeder)
+### Demo accounts (created by seeder)
 
-| Field    | Value             |
-|----------|-------------------|
-| Email    | `demo@kairos.app` |
-| Password | `demo1234`        |
+| Email              | Password    | Role    |
+|--------------------|-------------|---------|
+| `admin@kairos.app` | `admin1234` | `ADMIN` |
+| `user@kairos.app`  | `user1234`  | `USER`  |
+
+> **Never use these credentials in production.** The seeder is idempotent and skips existing users.
+
+The admin account can access the **Provider** tab in `/settings`; the regular user cannot.
 
 ### Auth flow
 
@@ -265,7 +271,7 @@ All endpoints are prefixed with `/api`.
 ```bash
 curl -X POST http://localhost:23001/api/auth/login \
   -H "Content-Type: application/json" \
-  -d '{"email":"demo@kairos.app","password":"demo1234"}'
+  -d '{"email":"user@kairos.app","password":"user1234"}'
 ```
 
 Response:
@@ -275,7 +281,7 @@ Response:
   "data": {
     "accessToken": "eyJ...",
     "refreshToken": "abc...",
-    "user": { "id": "...", "email": "demo@kairos.app", "name": "Demo User", "role": "USER", "workspace": "default" }
+    "user": { "id": "...", "email": "user@kairos.app", "name": "Test User", "role": "USER", "workspace": "default" }
   }
 }
 ```
